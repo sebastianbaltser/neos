@@ -23,6 +23,13 @@ def submit(filename, email, category, solver):
     all files (.dat, .mod, and .run) must be in the same directory, and share the same name. If specifying multiple
     filenames, the extension should be included.
     """
+    if len(filename) not in (1, 3):
+        click.echo(click.style("Either specify a single filename without extension or exactly three filenames.",
+                               fg="red"))
+        return
+    if email is None:
+        click.echo(click.style("Please specify an email address.", fg="red"))
+        return
     create_neos_job(filename, email, category, solver)
 
 
