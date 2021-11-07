@@ -20,7 +20,7 @@ class Neos:
         return self.server.submitJob(payload)
 
     def get_final_result(self, job_id, password):
-        return self.server.getFinalResult(job_id, password)
+        return self.server.getFinalResults(job_id, password)
 
     def get_solvers(self, category):
         return self.server.listSolversInCategory(category)
