@@ -68,7 +68,7 @@ def handle_filenames(filenames):
     Returns:
         (pathlib.Path, pathlib.Path, pathlib.Path): model-, data- and command-files in that order
     """
-    suffixes = [".mod", ".dat", ".cmd"]
+    suffixes = [".mod", ".dat", ".run"]
     if len(filenames) == 1:
         return (filenames[0].with_suffix(suffix) for suffix in suffixes)
     else:
