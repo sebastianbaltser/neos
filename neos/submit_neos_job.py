@@ -4,11 +4,11 @@ import click
 from neos.neos_server import Neos
 
 
-def create_neos_job(filename, email, category, solver):
+def create_neos_job(filenames, email, category, solver):
     neos = Neos()
 
     check_server_alive(neos)
-    job_number, password = submit_job(neos, filename, email, category=category, solver=solver)
+    job_number, password = submit_job(neos, filenames, email, category=category, solver=solver)
     click.echo(f"Job number: {job_number}")
     click.echo(f"Job password {password}")
 
@@ -25,8 +25,8 @@ def check_server_alive(neos: Neos):
         sys.exit(1)
 
 
-def submit_job(neos, filename_base, email, **kwargs):
-    job_description = create_neos_job_description(filename_base, email, **kwargs)
+def submit_job(neos, filenames, email, **kwargs):
+    job_description = create_neos_job_description(filenames, email, **kwargs)
 
     click.echo("Submitting NEOS job")
     job_number, password = neos.submit_job(job_description)
@@ -34,17 +34,17 @@ def submit_job(neos, filename_base, email, **kwargs):
     return job_number, password
 
 
-def create_neos_job_description(filename_base, email, **kwargs):
-    files = read_ampl_files(filename_base)
+def create_neos_job_description(filenames, email, **kwargs):
+    model, data, commands = read_ampl_files(*handle_filenames(filenames))
 
     job_description = f"""
     <document>
         {"".join(f"<{option}>{value}</{option}>" for option, value in kwargs.items())}
         <inputMethod>AMPL</inputMethod>
         <email><![CDATA[{email}]]></email>
-        <model><![CDATA[{files["model"]}]]></model>
-        <data><![CDATA[{files["data"]}]]></data>
-        <commands><![CDATA[{files["commands"]}]]></commands>
+        <model><![CDATA[{model}]]></model>
+        <data><![CDATA[{data}]]></data>
+        <commands><![CDATA[{commands}]]></commands>
         <comments><![CDATA[]]></comments>
     </document>"""
 
@@ -59,13 +59,31 @@ def handle_error_response(job_number, password):
         sys.exit(1)
 
 
-def read_ampl_files(filename_base):
-    file_type_extensions = {"model": "mod", "data": "dat", "commands": "run"}
-    files = {}
-    for file_type, extension in file_type_extensions.items():
-        filename = f"{filename_base}.{extension}"
+def handle_filenames(filenames):
+    """
+    Return names of model-, data- and command-files in that order.
+
+    Parameters:
+        filenames (pathlib.Path | list[pathlib.Path]: Single filename or list of filenames
+
+    Returns:
+        (pathlib.Path, pathlib.Path, pathlib.Path): model-, data- and command-files in that order
+    """
+    suffixes = [".mod", ".dat", ".cmd"]
+    if len(filenames) == 1:
+        return (filenames[0].with_suffix(suffix) for suffix in suffixes)
+    else:
+        try:
+            return filenames.sort(key=lambda x: suffixes.index(x.suffix))
+        except ValueError:
+            click.echo(click.style(f"Invalid filename.", fg="red", bold=True))
+
+
+def read_ampl_files(model, data, commands):
+    files = []
+    for filename in (model, data, commands):
         click.echo(f"Reading file {filename}")
         with open(filename, "r") as file:
-            files[file_type] = file.read()
+            files.append(file.read())
 
     return files
