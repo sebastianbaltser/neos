@@ -9,17 +9,19 @@ def neos():
 
 
 @neos.command()
-@click.argument('filename')
-@click.argument("email")
-@click.option("--category", default="lp", help="The solver category. Call neos list categories for a list of options.")
-@click.option("--solver", default="CPLEX", help="The solver to use. Call `neos list solvers` for a list of options.")
+@click.argument("filenames", type=click.Path(), nargs=-1)
+@click.option("--email", help="The email address to send the results to.")
+@click.option("--category", default="lp", help="The solver category. Call `neos list categories` "
+                                               "for a list of options.")
+@click.option("--solver", default="CPLEX", help="The solver to use. Call `neos list solvers` "
+                                                "for a list of options.")
 def submit(filename, email, category, solver):
     """
     Submit a job to NEOS for solving.
 
-    FILENAME is the name of the files to be submitted without the extension. The files must be in the same directory,
-    and share the same name.
-    EMAIL is the email address to send the results to.
+    FILENAME is the name of the files to be submitted. If passing only one single filename without an extension
+    all files (.dat, .mod, and .run) must be in the same directory, and share the same name. If specifying multiple
+    filenames, the extension should be included.
     """
     create_neos_job(filename, email, category, solver)
 
