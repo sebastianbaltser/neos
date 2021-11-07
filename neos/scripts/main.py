@@ -15,7 +15,7 @@ def neos():
                                                "for a list of options.")
 @click.option("--solver", default="CPLEX", help="The solver to use. Call `neos list solvers` "
                                                 "for a list of options.")
-def submit(filename, email, category, solver):
+def submit(filenames, email, category, solver):
     """
     Submit a job to NEOS for solving.
 
@@ -23,14 +23,14 @@ def submit(filename, email, category, solver):
     all files (.dat, .mod, and .run) must be in the same directory, and share the same name. If specifying multiple
     filenames, the extension should be included.
     """
-    if len(filename) not in (1, 3):
+    if len(filenames) not in (1, 3):
         click.echo(click.style("Either specify a single filename without extension or exactly three filenames.",
                                fg="red"))
         return
     if email is None:
         click.echo(click.style("Please specify an email address.", fg="red"))
         return
-    create_neos_job(filename, email, category, solver)
+    create_neos_job(filenames, email, category, solver)
 
 
 @neos.group("list")
