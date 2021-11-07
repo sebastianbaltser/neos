@@ -4,6 +4,7 @@ import xmlrpc.client as xmlrpclib
 
 
 def create_neos_server():
+    click.echo("Connecting to NEOS Server")
     return xmlrpclib.ServerProxy("https://neos-server.org:3333")
 
 
