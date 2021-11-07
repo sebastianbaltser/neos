@@ -1,4 +1,6 @@
 import click
+import pathlib
+
 from neos.neos_server import Neos
 from neos.submit_neos_job import create_neos_job
 
@@ -9,7 +11,7 @@ def neos():
 
 
 @neos.command()
-@click.argument("filenames", type=click.Path(), nargs=-1)
+@click.argument("filenames", type=pathlib.Path, nargs=-1)
 @click.option("--email", help="The email address to send the results to.")
 @click.option("--category", default="lp", help="The solver category. Call `neos list categories` "
                                                "for a list of options.")
