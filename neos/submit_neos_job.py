@@ -5,10 +5,11 @@ from neos.neos_server import Neos
 
 
 def create_neos_job(filenames, email, category, solver):
-    neos = Neos()
+    job_description = create_neos_job_description(filenames, email, category=category, solver=solver)
 
+    neos = Neos()
     check_server_alive(neos)
-    job_number, password = submit_job(neos, filenames, email, category=category, solver=solver)
+    job_number, password = submit_job(neos, job_description)
     click.echo(f"Job number: {job_number}")
     click.echo(f"Job password {password}")
 
@@ -25,9 +26,7 @@ def check_server_alive(neos: Neos):
         sys.exit(1)
 
 
-def submit_job(neos, filenames, email, **kwargs):
-    job_description = create_neos_job_description(filenames, email, **kwargs)
-
+def submit_job(neos, job_description):
     click.echo("Submitting NEOS job")
     job_number, password = neos.submit_job(job_description)
     handle_error_response(job_number, password)
