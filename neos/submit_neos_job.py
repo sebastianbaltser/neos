@@ -73,7 +73,7 @@ def handle_filenames(filenames):
         return (filenames[0].with_suffix(suffix) for suffix in suffixes)
     else:
         try:
-            return filenames.sort(key=lambda x: suffixes.index(x.suffix))
+            return sorted(filenames, key=lambda x: suffixes.index(x.suffix))
         except ValueError:
             click.echo(click.style(f"Invalid filename.", fg="red", bold=True))
 
