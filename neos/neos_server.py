@@ -27,3 +27,18 @@ class Neos:
 
     def get_categories(self):
         return self.server.listCategories()
+
+    def get_job_status(self, job_id, password) -> str:
+        """
+        Gets the current status of the job. Returns "Done", "Running", "Waiting".
+
+        Raises:
+            ValueError: If the job is not found or the password is incorrect.
+        """
+        response = self.server.getJobStatus(job_id, password)
+        if response == "Unknown Job":
+            raise ValueError(f"Unknown Job ID: {job_id}")
+        elif response == "Bad Password":
+            raise ValueError(f"Bad Password '{password}' for Job ID: {job_id}")
+        else:
+            return response
