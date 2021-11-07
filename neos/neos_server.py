@@ -14,7 +14,7 @@ class Neos:
 
     def is_server_alive(self):
         alive = self.server.ping()
-        return alive != "NeosServer is alive\n"
+        return alive == "NeosServer is alive\n"
 
     def submit_job(self, payload):
         return self.server.submitJob(payload)
