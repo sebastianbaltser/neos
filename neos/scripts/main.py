@@ -26,8 +26,13 @@ def submit(filename, email, category, solver):
     create_neos_job(filename, email, category, solver)
 
 
-@neos.command("list-categories")
-def list_category():
+@neos.group("list")
+def list_options():
+    pass
+
+
+@list_options.command("categories")
+def list_categories():
     """
     List the available solver categories.
     """
@@ -37,11 +42,11 @@ def list_category():
         click.echo(f"{abbreviation}: {category}")
 
 
-@neos.command("list-solvers")
+@list_options.command("solvers")
 @click.option("--category", default="lp", help="The category to list solvers for.")
 def list_solvers(category):
     """
-    List the available solvers.
+    List the available solvers for a given category.
     """
     solvers = Neos().get_solvers(category)
     click.echo(f"Solvers available for category '{category}':")
