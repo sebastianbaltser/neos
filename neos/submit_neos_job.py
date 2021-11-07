@@ -1,5 +1,6 @@
 import sys
 import click
+import time
 
 from neos.neos_server import Neos
 
@@ -13,9 +14,9 @@ def create_neos_job(filenames, email, category, solver):
     click.echo(f"Job number: {job_number}")
     click.echo(f"Job password {password}")
 
-    msg = neos.get_final_result(job_number, password)
+    result = get_result(neos, job_number, password)
     click.echo(click.style("Result received:", fg="green", bold=True))
-    click.echo(msg.data.decode())
+    click.echo(result)
 
 
 def check_server_alive(neos: Neos):
@@ -86,3 +87,14 @@ def read_ampl_files(model, data, commands):
             files.append(file.read())
 
     return files
+
+
+def get_result(neos, job_id, password):
+    while True:
+        status = neos.get_job_status(job_id, password)
+        click.echo(f"Status: {status}\r")
+        if status == "Done":
+            break
+        time.sleep(0.5)
+
+    return neos.get_final_result(job_id, password).data.decode()
