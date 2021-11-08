@@ -1,6 +1,7 @@
 import sys
 import click
 import time
+import itertools
 
 from neos.neos_server import Neos
 
@@ -90,10 +91,12 @@ def read_ampl_files(model, data, commands):
 
 
 def get_result(neos, job_id, password):
+    loading = itertools.cycle(["", ".", "..", "..."])
     while True:
         status = neos.get_job_status(job_id, password)
-        click.echo(f"Status: {status}\r")
+        click.echo(f"  Status: {status} " + next(loading) + " "*20 + "\r", nl=False)
         if status == "Done":
+            click.echo("")
             break
         time.sleep(0.5)
 
