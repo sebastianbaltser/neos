@@ -6,8 +6,9 @@ import itertools
 from neos.neos_server import Neos
 
 
-def create_neos_job(filenames, email, category, solver):
-    job_description = create_neos_job_description(filenames, email, category=category, solver=solver)
+def create_neos_job(filenames, email, category, solver, priority=False):
+    job_description = create_neos_job_description(filenames, email, priority=priority,
+                                                  category=category, solver=solver)
 
     neos = Neos()
     check_server_alive(neos)
@@ -35,13 +36,14 @@ def submit_job(neos, job_description):
     return job_number, password
 
 
-def create_neos_job_description(filenames, email, **kwargs):
+def create_neos_job_description(filenames, email, priority=False, **kwargs):
     model, data, commands = read_ampl_files(*handle_filenames(filenames))
 
     job_description = f"""
     <document>
         {"".join(f"<{option}>{value}</{option}>" for option, value in kwargs.items())}
         <inputMethod>AMPL</inputMethod>
+        <priority><![CDATA[{"short" if priority else ""}]]></priority>
         <email><![CDATA[{email}]]></email>
         <model><![CDATA[{model}]]></model>
         <data><![CDATA[{data}]]></data>
