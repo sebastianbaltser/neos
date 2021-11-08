@@ -17,7 +17,9 @@ def neos():
                                                "for a list of options.")
 @click.option("--solver", default="CPLEX", help="The solver to use. Call `neos list solvers` "
                                                 "for a list of options.")
-def submit(filenames, email, category, solver):
+@click.option("--priority", type=click.BOOL, default=False, help="Whether to submit to higher priority queue with "
+                                                                 "maximum CPU time of 5 minutes.")
+def submit(filenames, email, category, solver, priority):
     """
     Submit a job to NEOS for solving.
 
@@ -32,7 +34,7 @@ def submit(filenames, email, category, solver):
     if email is None:
         click.echo(click.style("Please specify an email address.", fg="red"))
         return
-    create_neos_job(filenames, email, category, solver)
+    create_neos_job(filenames, email, category, solver, priority)
 
 
 @neos.group("list")
