@@ -39,6 +39,7 @@ def submit(filenames, email, category, solver, priority):
 
 @neos.group("list")
 def list_options():
+    """List different options."""
     pass
 
 
