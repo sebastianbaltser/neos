@@ -7,6 +7,7 @@ from neos.submit_neos_job import create_neos_job
 
 @click.group()
 def neos():
+    """neos is a tool for communicating with the NEOS Optimization Server."""
     pass
 
 
