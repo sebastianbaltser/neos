@@ -5,13 +5,15 @@ submitting optimization problems and retrieving optimization results.
 
 ## Installation
 
-`neos` can be installed directly from this GitHub repository using `pip`:
+`neos` can be installed directly from this GitHub repository using `pip`. 
+From the Terminal (macOS/Linux) or Command Prompt (Windows), run the following command:
 
 ```bash
 pip install git+https://github.com/sebastianbaltser/neos
 ```
 
-Installing will provide the `neos` command group which can be executed from the command line.
+Installing will provide the `neos` command group which can be executed, again, from the Terminal (macOS/Linux) 
+or Command Prompt (Windows).
 
 ## Usage
 
