@@ -8,7 +8,7 @@ submitting optimization problems and retrieving optimization results.
 `neos` can be installed directly from this GitHub repository using `pip`. 
 From the Terminal (macOS/Linux) or Command Prompt (Windows), run the following command:
 
-```bash
+```shell
 pip install git+https://github.com/sebastianbaltser/neos
 ```
 
@@ -23,13 +23,13 @@ and `optim.run`. The problem category is linear programming, and you would like 
 To submit the optimization problem to the NEOS server navigate to the folder where the files are located, 
 and use the `neos submit` command specifying the basename of the files:
 
-```bash
+```shell
 neos submit "optim" --email your@email.com --category lp --solver CPLEX
 ```
 
 If the files have different basenames, you can specify each separate name with extensions:
 
-```bash
+```shell
 neos submit "ts_problem.mod" "ts_problem.run" "optim.dat" --email your@email.com --category lp --solver CPLEX
 ```
 
