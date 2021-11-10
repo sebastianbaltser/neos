@@ -17,6 +17,8 @@ or Command Prompt (Windows).
 
 ## Usage
 
+### Submit an optimization problem
+
 Say for example that you defined the optimization problem in the three files `optim.mod`, `optim.dat`, 
 and `optim.run`. The problem category is linear programming, and you would like to use the solver CPLEX.
 
@@ -34,3 +36,19 @@ neos submit "ts_problem.mod" "ts_problem.run" "optim.dat" --email your@email.com
 ```
 
 This will submit the job to the NEOS server and print the results when they are available.
+
+### Get a list of problem categories or solvers
+
+To get a list of problem categories, use the `neos list categories` command:
+
+```shell
+neos list categories
+```
+
+and to get a list of solvers available for a specific category, use the 
+`neos list solvers` command specifying the category, e.g. `milp` for 
+Mixed Integer Linear Programming:
+
+```shell
+neos list solvers --category milp
+```
