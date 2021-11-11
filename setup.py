@@ -11,7 +11,7 @@ setup(
     ],
     author="Sebastian Baltser",
     author_email="sebastian.baltser@gmail.com",
-    python_requires=">=3",
+    python_requires=">=2",
     entry_points={
         "console_scripts": ["neos = neos.scripts.main:neos"]
     }
